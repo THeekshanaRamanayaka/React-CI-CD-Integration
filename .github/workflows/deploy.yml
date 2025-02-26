@@ -33,7 +33,6 @@ jobs:
               run: |
                 echo "${{secrets.AWS_ACCESS_KEY_ID}}" | base64 --decode >> aws_access_key_id.txt
                 echo "${{secrets.AWS_SECRET_ACCESS_KEY}}" | base64 --decode >> aws_secret_access_key.txt       
-                echo "${{secrets.AWS_REGION}}" | base64 --decode >> aws_region.txt
                 echo "${{secrets.AWS_BUCKET_NAME}}" | base64 --decode >> aws_bucket_name.txt
                 echo "${{secrets.CODEPIPELINE_NAME}}" | base64 --decode >> codepipeline_name.txt
              
@@ -44,7 +43,7 @@ jobs:
               with:
                   aws-access-key-id: $(cat aws_access_key_id.txt)
                   aws-secret-access-key: $(cat aws_secret_access_key.txt)
-                  aws-region: $(cat aws_region.txt)
+                  aws-region: ${{secrets.AWS_REGION}}
 
             - name: Upload Build to S3
               run: aws s3 sync build/ s3://$(cat aws_bucket_name.txt) --delete
