@@ -20,9 +20,8 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:     
-                node-version: 22.14.0
+                node-version: 20.x
               
-
             - name: Install Dependencies
               run: npm install
 
@@ -41,7 +40,8 @@ jobs:
           
             - name: Upload to S3 with Correct Content-Type
               run: |
-                    aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --exclude "*.html" --content-type "text/html"
+                  aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
+                  aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/index.html s3://${{ secrets.S3_BUCKET_NAME }}/index.html --content-type "text/html" --metadata-directive REPLACE
 
             - name: Trigger CodePipeline
               run: aws codepipeline start-pipeline-execution --name ${{ secrets.PIPELINE_NAME }}
