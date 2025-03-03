@@ -39,9 +39,7 @@ jobs:
                   aws-region: ${{ secrets.AWS_REGION }}
           
             - name: Upload to S3 with Correct Content-Type
-              run: |
-                  aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
-                  aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/index.html s3://${{ secrets.S3_BUCKET_NAME }}/index.html --content-type "text/html" --metadata-directive REPLACE
+              run: aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --content-type "text/html"
 
             - name: Trigger CodePipeline
               run: aws codepipeline start-pipeline-execution --name ${{ secrets.PIPELINE_NAME }}
