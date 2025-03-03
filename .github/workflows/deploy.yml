@@ -42,8 +42,6 @@ jobs:
             - name: Upload to S3 with Correct Content-Type
               run: |
                     aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --exclude "*.html" --content-type "text/html"
-                    aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --exclude "*.js" --content-type "application/javascript"
-                    aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --exclude "*.css" --content-type "text/css"
 
             - name: Trigger CodePipeline
               run: aws codepipeline start-pipeline-execution --name ${{ secrets.PIPELINE_NAME }}
